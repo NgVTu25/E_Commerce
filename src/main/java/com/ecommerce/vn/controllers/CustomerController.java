@@ -1,12 +1,9 @@
 package com.ecommerce.vn.controllers;
 
 import com.ecommerce.vn.dtos.CustomersDTOs;
-import com.ecommerce.vn.dtos.OrdersDTOs;
 import com.ecommerce.vn.models.entitis.Customers;
-import com.ecommerce.vn.models.entitis.Orders;
 import com.ecommerce.vn.services.CustomerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
