@@ -14,9 +14,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "Orders")
+@Table(name = "orders")
 public class Orders {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "OrderID")
     private Integer id;
 

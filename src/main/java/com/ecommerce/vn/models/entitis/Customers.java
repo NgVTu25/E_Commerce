@@ -11,9 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "Customers")
+@Table(name = "customers")
 public class Customers {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CustomerID", length = 5, nullable = false )
     private String id;
 

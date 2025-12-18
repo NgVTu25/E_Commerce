@@ -37,10 +37,11 @@ public class CustomerService {
         return customerRepository.save(exitingCustomer);
     }
 
-    public void deleteCustomer(String id) {
+    public String deleteCustomer(String id) {
         if (!customerRepository.existsById(id)) {
             throw new RuntimeException("Không tìm thấy Customer để xóa");
         }
             customerRepository.deleteById(id);
+        return "Đã xóa thành công customer";
     }
 }

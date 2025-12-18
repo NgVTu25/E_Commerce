@@ -13,7 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "EmployeeTerritories")
+@Table(name = "employeeTerritories")
 public class EmployeeTerritories {
 
     @EmbeddedId
@@ -35,8 +35,10 @@ public class EmployeeTerritories {
     @Embeddable
     public static class EmployeeTerritoriesId implements Serializable {
 
-        private Long employeeId;
+        @Column(name = "EmployeeID")
+        private Integer employeeId; // Changed from Long to Integer to match Employees entity
 
+        @Column(name = "TerritoryID")
         private String territoryId;
     }
 }

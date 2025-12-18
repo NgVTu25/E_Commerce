@@ -8,6 +8,7 @@ import com.ecommerce.vn.repositories.OrderRepository;
 import com.ecommerce.vn.repositories.ShipperRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class OrderService {
     }
 
     public Orders createOrder(OrdersDTOs ordersDTOs) {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT); // Add this line
         Orders orders = new Orders();
         modelMapper.map(ordersDTOs, orders);
         if (ordersDTOs.getCustomerId() != null) {
@@ -55,6 +57,7 @@ public class OrderService {
     }
 
     public Orders updateOrder(Integer id, OrdersDTOs ordersDTOs) {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT); // Add this line
         Orders exitingOrders = getOrderById(id);
         modelMapper.map(exitingOrders, ordersDTOs);
         if (ordersDTOs.getCustomerId() != null) {
@@ -77,11 +80,15 @@ public class OrderService {
         return orderRepository.save(exitingOrders);
     }
 
-    public void deleteOrder(Integer id) {
+    public List<Orders> getOrderByCustomerId(String id) {
+        return orderRepository.getOrderByCustomerId(id);
+    }
+
+    public String deleteOrder(Integer id) {
         if (!orderRepository.existsById(id)) {
             throw new RuntimeException("Không tìm thấy order để xóa");
         }
-        orderRepository.deleteById(id);
+            orderRepository.deleteById(id);
+        return "Đã xóa thành công Order";
     }
-
 }

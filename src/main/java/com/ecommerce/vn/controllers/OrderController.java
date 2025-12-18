@@ -16,22 +16,29 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    // Method: GET
     @GetMapping
     public ResponseEntity<List<Orders>> getAllOrders() {
         return ResponseEntity.ok(orderService.getAllOrders());
     }
 
-    // Method: GET
     @GetMapping("/{id}")
     public ResponseEntity<Orders> getOrderById(@PathVariable Integer id) {
         return ResponseEntity.ok(orderService.getOrderById(id));
     }
 
-    // Method: POST
+    @GetMapping("/customer/{id}")
+    public ResponseEntity<List<Orders>> getOrderByCustomerId(@PathVariable String id) {
+        return ResponseEntity.ok(orderService.getOrderByCustomerId(id));
+    }
+
     @PostMapping
     public ResponseEntity<Orders> createOrder(@RequestBody OrdersDTOs ordersDTOs) {
         Orders newOrder = orderService.createOrder(ordersDTOs);
         return ResponseEntity.ok(newOrder);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteOrder(@PathVariable Integer id) {
+        return ResponseEntity.ok(orderService.deleteOrder(id));
     }
 }

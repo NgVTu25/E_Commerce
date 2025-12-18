@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "Region")
+@Table(name = "region")
 public class Region {
     @Id
     @Column(name = "RegionID")

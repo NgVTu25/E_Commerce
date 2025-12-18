@@ -1,5 +1,6 @@
 package com.ecommerce.vn.models.entitis;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,13 +14,13 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Employees")
+@Table(name = "employees")
 public class Employees {
     @Id
     @Column(name = "EmployeeID")
     private Integer id;
 
-    @Column(name = "lastName", length = 20)
+    @Column(name = "LastName", length = 20)
     private String lastName;
 
     @Column(name = "FirstName", length = 10)
@@ -47,7 +48,7 @@ public class Employees {
     private String region;
 
     @Column(name = "PostalCode", length = 10)
-    private int postalCode;
+    private String postalCode;
 
     @Column(name = "Country", length = 15)
     private String country;
@@ -58,15 +59,15 @@ public class Employees {
     @Column(name = "Extension", length = 4)
     private String extension;
 
-    @Lob
-    @Column(name = "photo",columnDefinition = "BLOB")
+    @JsonIgnore
+    @Column(name = "Photo")
     private byte[] photo;
 
     @Column(name = "Notes", columnDefinition = "TEXT")
     private String notes;
 
     @Column(name = "ReportsTo")
-    private int reportsTo;
+    private Integer reportsTo;
 
     @Column(name = "PhotoPath")
     private String photoPath;

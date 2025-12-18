@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "`Order Details`")
+@Table(name = "Order Details")
 public class OrderDetails {
 
     @EmbeddedId
@@ -45,8 +45,10 @@ public class OrderDetails {
     @Embeddable
     public static class OrderDetailsId implements Serializable {
 
-        private Long orderId;
+        @Column(name = "OrderID")
+        private Integer orderId;
 
-        private Long productId;
+        @Column(name = "ProductID")
+        private Integer productId;
     }
 }
