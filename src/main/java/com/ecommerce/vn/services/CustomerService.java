@@ -22,7 +22,7 @@ public class CustomerService {
 
     public Customers getCustomerById(String id) {
         return customerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy OrderID"));
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy CustomerID"));
     }
 
     public Customers createCustomer(CustomersDTOs customersDTOs) {
