@@ -24,20 +24,8 @@ public class SupplierService {
     }
 
     public Suppliers createSuppliers(SuppliersDTOs suppliersDTOs) {
-        Suppliers suppliers = Suppliers.builder()
-                .companyName(suppliersDTOs.getCompanyName())
-                .contactName(suppliersDTOs.getContactName())
-                .contactTitle(suppliersDTOs.getContactTitle())
-                .address(suppliersDTOs.getAddress())
-                .city(suppliersDTOs.getCity())
-                .region(suppliersDTOs.getRegion())
-                .postalCode(suppliersDTOs.getPostalCode())
-                .country(suppliersDTOs.getCountry())
-                .phone(suppliersDTOs.getPhone())
-                .fax(suppliersDTOs.getFax())
-                .homePage(suppliersDTOs.getHomePage())
-                .build();
-
+        Suppliers suppliers = new Suppliers();
+        modelMapper.map(suppliersDTOs, suppliers);
         return supplierRepository.save(suppliers);
     }
 

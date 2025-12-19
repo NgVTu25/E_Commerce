@@ -1,5 +1,6 @@
 package com.ecommerce.vn.services;
 
+import com.ecommerce.vn.config.GlobalExceptionHandler;
 import com.ecommerce.vn.dtos.CustomersDTOs;
 import com.ecommerce.vn.models.entitis.Customers;
 import com.ecommerce.vn.repositories.CustomerRepository;
@@ -26,14 +27,14 @@ public class CustomerService {
 
     public Customers createCustomer(CustomersDTOs customersDTOs) {
         Customers customers = new Customers();
-        modelMapper.map(customers, customersDTOs);
+        modelMapper.map(customersDTOs, customers);
 
         return customerRepository.save(customers);
     }
 
     public Customers updateCustomer(String id, CustomersDTOs customersDTOs) {
         Customers exitingCustomer = getCustomerById(id);
-        modelMapper.map(exitingCustomer, customersDTOs);
+        modelMapper.map(customersDTOs, exitingCustomer);
         return customerRepository.save(exitingCustomer);
     }
 

@@ -37,6 +37,12 @@ public class OrderController {
         return ResponseEntity.ok(newOrder);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Orders> updateOrder(@PathVariable Integer id, @RequestBody OrdersDTOs ordersDTOs) {
+        return ResponseEntity.ok(orderService.updateOrder(id, ordersDTOs));
+    }
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteOrder(@PathVariable Integer id) {
         return ResponseEntity.ok(orderService.deleteOrder(id));

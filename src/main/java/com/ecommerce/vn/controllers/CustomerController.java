@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/api/Customer")
+@RestController
+@RequestMapping("/api/Customers")
 @RequiredArgsConstructor
 public class CustomerController {
     private final CustomerService customerService;
@@ -26,11 +26,15 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.getCustomerById(id));
     }
 
-
     @PostMapping
     public ResponseEntity<Customers> createCustomer(@RequestBody CustomersDTOs customersDTOs) {
         Customers newCustomer = customerService.createCustomer(customersDTOs);
         return ResponseEntity.ok(newCustomer);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Customers> updateCustomer(@PathVariable String id, @RequestBody CustomersDTOs customersDTOs) {
+        return ResponseEntity.ok(customerService.updateCustomer(id, customersDTOs));
     }
 
     @DeleteMapping("/{id}")
