@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "Order Details")
+@Table(name = "order_details")
 public class OrderDetails {
 
     @EmbeddedId

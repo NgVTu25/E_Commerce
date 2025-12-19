@@ -19,7 +19,7 @@ public class SupplierService {
         return supplierRepository.findAll();
     }
 
-    public Suppliers getSuppliersById(Long id) {
+    public Suppliers getSuppliersById(Integer id) {
         return supplierRepository.findById(id).orElseThrow(() -> new RuntimeException("Không tìm thấy Supplier"));
     }
 
@@ -29,13 +29,13 @@ public class SupplierService {
         return supplierRepository.save(suppliers);
     }
 
-    public Suppliers updateSuppliers(Long id, SuppliersDTOs suppliersDTOs) {
+    public Suppliers updateSuppliers(Integer id, SuppliersDTOs suppliersDTOs) {
         Suppliers suppliers = getSuppliersById(id);
         modelMapper.map(suppliersDTOs, suppliers);
         return supplierRepository.save(suppliers);
     }
 
-    public void deleteSuppliers(Long id) {
+    public void deleteSuppliers(Integer id) {
         if (!supplierRepository.existsById(id)) {
             throw new RuntimeException("Không tìm thấy sản phẩm để xóa");
         }

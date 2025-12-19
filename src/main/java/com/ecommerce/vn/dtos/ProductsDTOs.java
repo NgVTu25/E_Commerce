@@ -14,6 +14,6 @@ public class ProductsDTOs {
     private Integer reorderLevel;
     private Boolean discontinued;
 
-    private Long categoryId;
-    private Long supplierId;
+    private Short categoryId;
+    private Integer supplierId;
 }

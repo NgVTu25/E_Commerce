@@ -60,6 +60,7 @@ public class Employees {
     private String extension;
 
     @JsonIgnore
+    @Lob
     @Column(name = "Photo")
     private byte[] photo;
 

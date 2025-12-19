@@ -22,7 +22,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Categories> getCategoryById(@PathVariable Long id) {
+    public ResponseEntity<Categories> getCategoryById(@PathVariable Short id) {
         return ResponseEntity.ok(categoryService.getCategoryById(id));
     }
 
@@ -32,12 +32,12 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Categories> updateCategory(@PathVariable Long id, @RequestBody CategoriesDTOs categoriesDTOs) {
+    public ResponseEntity<Categories> updateCategory(@PathVariable Short id, @RequestBody CategoriesDTOs categoriesDTOs) {
         return ResponseEntity.ok(categoryService.updateCategory(id, categoriesDTOs));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCategory(@PathVariable Long id) {
+    public ResponseEntity<String> deleteCategory(@PathVariable Short id) {
         categoryService.deleteCategory(id);
         return ResponseEntity.ok("Đã xóa danh mục thành công");
     }

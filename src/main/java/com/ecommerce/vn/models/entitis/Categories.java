@@ -1,5 +1,6 @@
 package com.ecommerce.vn.models.entitis;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +17,7 @@ public class Categories {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CategoryID")
-    private short id;
+    private Short id;
 
     @Column(name = "CategoryName", nullable = false)
     private String categoryName;
@@ -24,8 +25,9 @@ public class Categories {
     @Column(name = "Description", columnDefinition = "TEXT")
     private String description;
 
-    @Lob
-    @Column(name = "Picture")
-    private String picture;
+    @JsonIgnore
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "Picture", columnDefinition = "bytea")
+    private byte[] picture;
 
 }

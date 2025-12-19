@@ -6,6 +6,6 @@ import lombok.Data;
 public class CategoriesDTOs {
 
     private String categoryName;
-    private String description;
-    private String picture;
+    private String cescription;
+    private byte[] picture;
 }

@@ -22,7 +22,7 @@ public class SupplierController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Suppliers> getSupplierById(@PathVariable Long id) {
+    public ResponseEntity<Suppliers> getSupplierById(@PathVariable Integer id) {
         return ResponseEntity.ok(supplierService.getSuppliersById(id));
     }
 
@@ -32,12 +32,12 @@ public class SupplierController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Suppliers> updateSupplier(@PathVariable Long id, @RequestBody SuppliersDTOs suppliersDTOs) {
+    public ResponseEntity<Suppliers> updateSupplier(@PathVariable Integer id, @RequestBody SuppliersDTOs suppliersDTOs) {
         return ResponseEntity.ok(supplierService.updateSuppliers(id, suppliersDTOs));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteSupplier(@PathVariable Long id) {
+    public ResponseEntity<String> deleteSupplier(@PathVariable Integer id) {
         supplierService.deleteSuppliers(id);
         return ResponseEntity.ok("Đã xóa nhà cung cấp thành công");
     }

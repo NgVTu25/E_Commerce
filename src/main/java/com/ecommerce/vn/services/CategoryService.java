@@ -4,6 +4,7 @@ import com.ecommerce.vn.dtos.CategoriesDTOs;
 import com.ecommerce.vn.models.entitis.Categories;
 import com.ecommerce.vn.repositories.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final ModelMapper modelMapper;
 
     public List<Categories> getAllCategories() {
         return categoryRepository.findAll();
@@ -22,31 +24,25 @@ public class CategoryService {
         return categoryRepository.findByCategoryNameContaining(name);
     }
 
-    public Categories getCategoryById(Long id) {
+    public Categories getCategoryById(Short id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy danh mục có ID: " + id));
     }
 
-    public Categories updateCategory(Long id, CategoriesDTOs categoryDetails) {
+    public Categories updateCategory(Short id, CategoriesDTOs categoryDetails) {
         Categories existingCategory = getCategoryById(id);
-        existingCategory.setCategoryName(categoryDetails.getCategoryName());
-        existingCategory.setDescription(categoryDetails.getDescription());
-
+        modelMapper.map(categoryDetails, existingCategory);
         return categoryRepository.save(existingCategory);
     }
 
     public Categories createCategory(CategoriesDTOs categoriesDTOs) {
-        Categories category = Categories.builder()
-                .categoryName(categoriesDTOs.getCategoryName())
-                .description(categoriesDTOs.getDescription())
-                .picture(categoriesDTOs.getPicture())
-                .build();
-
+        Categories category = new Categories();
+        modelMapper.map(categoriesDTOs, category);
         return categoryRepository.save(category);
     }
 
 
-    public void deleteCategory(Long id) {
+    public void deleteCategory(Short id) {
         if (!categoryRepository.existsById(id)) {
             throw new RuntimeException("Không tìm thấy danh mục để xóa");
         }

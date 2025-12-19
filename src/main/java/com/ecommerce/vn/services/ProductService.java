@@ -8,6 +8,7 @@ import com.ecommerce.vn.repositories.ProductRepository;
 import com.ecommerce.vn.repositories.CategoryRepository;
 import com.ecommerce.vn.repositories.SupplierRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,25 +20,20 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final SupplierRepository supplierRepository;
+    private final ModelMapper modelMapper;
 
     public List<Products> getAllProducts() {
         return productRepository.findAll();
     }
 
-    public Products getProductById(Long id) {
+    public Products getProductById(Integer id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm ID: " + id));
     }
 
     public Products createProduct(ProductsDTOs productDTO) {
         Products product = new Products();
-        product.setProductName(productDTO.getProductName());
-        product.setQuantityPerUnit(productDTO.getQuantityPerUnit());
-        product.setUnitPrice(productDTO.getUnitPrice());
-        product.setUnitsInStock(productDTO.getUnitsInStock());
-        product.setUnitsOnOrder(productDTO.getUnitsOnOrder());
-        product.setReorderLevel(productDTO.getReorderLevel());
-        product.setDiscontinued(productDTO.getDiscontinued());
+        modelMapper.map(productDTO, product);
 
         if (productDTO.getCategoryId() != null) {
             Categories category = categoryRepository.findById(productDTO.getCategoryId())
@@ -54,7 +50,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public Products updateProduct(Long id, ProductsDTOs productDTO) {
+    public Products updateProduct(Integer id, ProductsDTOs productDTO) {
         Products existingProduct = getProductById(id);
         existingProduct.setProductName(productDTO.getProductName());
         existingProduct.setUnitPrice(productDTO.getUnitPrice());
@@ -74,7 +70,7 @@ public class ProductService {
         return productRepository.save(existingProduct);
     }
 
-    public void deleteProduct(Long id) {
+    public void deleteProduct(Integer id) {
         if (!productRepository.existsById(id)) {
             throw new RuntimeException("Không tìm thấy sản phẩm để xóa");
         }

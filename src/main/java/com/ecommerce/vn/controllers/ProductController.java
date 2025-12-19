@@ -22,7 +22,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Products> getProductById(@PathVariable Long id) {
+    public ResponseEntity<Products> getProductById(@PathVariable Integer id) {
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
@@ -37,12 +37,12 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Products> updateProduct(@PathVariable Long id, @RequestBody ProductsDTOs productDTO) {
+    public ResponseEntity<Products> updateProduct(@PathVariable Integer id, @RequestBody ProductsDTOs productDTO) {
         return ResponseEntity.ok(productService.updateProduct(id, productDTO));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<String> deleteProduct(@PathVariable Integer id) {
         productService.deleteProduct(id);
         return ResponseEntity.ok("Đã xóa sản phẩm thành công");
     }
