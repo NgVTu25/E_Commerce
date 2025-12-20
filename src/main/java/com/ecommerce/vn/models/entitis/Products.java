@@ -1,5 +1,6 @@
 package com.ecommerce.vn.models.entitis;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +27,7 @@ public class Products {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SupplierID", nullable = false)
+    @JsonIgnoreProperties({ "region", "postalCode", "contactTitle", "country", "contactName"})
     private Suppliers supplier;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -48,6 +50,6 @@ public class Products {
     @Column(name = "ReorderLevel")
     private Integer reorderLevel;
 
-    @Column(name = "Discontinued", nullable = false)
-    private Boolean discontinued;
+    @Column(name = "Discontinued", nullable = false, columnDefinition = "int default 0")
+    private Integer discontinued;
 }

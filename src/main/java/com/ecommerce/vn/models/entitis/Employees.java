@@ -60,8 +60,8 @@ public class Employees {
     private String extension;
 
     @JsonIgnore
-    @Lob
-    @Column(name = "Photo")
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "Photo", columnDefinition = "bytea")
     private byte[] photo;
 
     @Column(name = "Notes", columnDefinition = "TEXT")

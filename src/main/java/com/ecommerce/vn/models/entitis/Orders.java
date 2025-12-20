@@ -1,5 +1,6 @@
 package com.ecommerce.vn.models.entitis;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +26,7 @@ public class Orders {
     @JoinColumn(name = "CustomerID")
     private Customers customer;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "EmployeeID", nullable = false)
     private Employees employee;

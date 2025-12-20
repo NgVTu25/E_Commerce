@@ -12,7 +12,7 @@ public class ProductsDTOs {
     private Integer unitsInStock;
     private Integer unitsOnOrder;
     private Integer reorderLevel;
-    private Boolean discontinued;
+    private Integer discontinued;
 
     private Short categoryId;
     private Integer supplierId;
