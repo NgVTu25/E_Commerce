@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS user_roles (
 INSERT INTO roles (name, description) VALUES 
     ('ROLE_ADMIN', 'Administrator role with full access'),
     ('ROLE_MANAGER', 'Manager role with management access'),
-    ('ROLE_USER', 'Regular user role with basic access')
+        ('ROLE_USER', 'Regular user role with basic access')
 ON CONFLICT (name) DO NOTHING;
 
 -- Insert default admin user (password: admin123)
