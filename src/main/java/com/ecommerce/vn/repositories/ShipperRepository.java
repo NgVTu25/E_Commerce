@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface ShipperRepository extends JpaRepository<Shippers, Long> {
     List<ShipperDTO> getShippersById(Long id);
+
+    Shippers findByPhone(String phone);
 }

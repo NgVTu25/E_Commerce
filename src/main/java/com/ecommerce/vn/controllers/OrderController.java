@@ -1,7 +1,11 @@
 package com.ecommerce.vn.controllers;
 
 import com.ecommerce.vn.dtos.OrderDTO;
+import com.ecommerce.vn.models.entitis.OrderDetails;
+import com.ecommerce.vn.services.OrderDetailService;
 import com.ecommerce.vn.services.OrderService;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +18,7 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+    private final OrderDetailService orderDetailService;
 
     @GetMapping
     public ResponseEntity<List<OrderDTO>> getAllOrders() {
@@ -31,15 +36,19 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO) {
+    public ResponseEntity<OrderDTO> createOrder(@Valid @RequestBody OrderDTO orderDTO) {
         return ResponseEntity.status(201).body(orderService.createOrder(orderDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<OrderDTO> updateOrder(@PathVariable Integer id, @RequestBody OrderDTO orderDTO) {
+    public ResponseEntity<OrderDTO> updateOrder(@PathVariable Integer id, @Valid @RequestBody OrderDTO orderDTO) {
         return ResponseEntity.ok(orderService.updateOrder(id, orderDTO));
     }
 
+    @GetMapping("/{orderId}/details")
+    public ResponseEntity<List<OrderDetails>> getOrderDetailsByOrderId(@PathVariable Integer orderId) {
+        return ResponseEntity.ok(orderDetailService.getAllOrderDetails());
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrder(@PathVariable Integer id) {

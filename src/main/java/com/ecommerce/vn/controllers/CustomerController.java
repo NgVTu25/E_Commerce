@@ -2,6 +2,8 @@ package com.ecommerce.vn.controllers;
 
 import com.ecommerce.vn.dtos.CustomerDTO;
 import com.ecommerce.vn.services.CustomerService;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,15 +27,14 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerDTO dto) {
+    public ResponseEntity<CustomerDTO> createCustomer(@Valid @RequestBody CustomerDTO dto) {
         return ResponseEntity.status(201).body(customerService.createCustomer(dto));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CustomerDTO> updateCustomer(
             @PathVariable String id,
-            @RequestBody CustomerDTO dto
-    ) {
+            @Valid @RequestBody CustomerDTO dto) {
         return ResponseEntity.ok(customerService.updateCustomer(id, dto));
     }
 

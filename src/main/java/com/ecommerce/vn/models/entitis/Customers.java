@@ -1,7 +1,6 @@
 package com.ecommerce.vn.models.entitis;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class Customers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CustomerID", length = 5, nullable = false )
+    @Column(name = "CustomerID", length = 5, nullable = false)
     private String id;
 
     @Column(name = "CompanyName", length = 40)

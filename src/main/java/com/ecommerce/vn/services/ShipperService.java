@@ -28,4 +28,9 @@ public class ShipperService {
         return shipperDTO;
     }
 
+    public ShipperDTO getShipperByPhone(String phone) {
+        Shippers shippers = shipperRepository.findByPhone(phone);
+        return modelMapper.map(shippers, ShipperDTO.class);
+    }
+
 }

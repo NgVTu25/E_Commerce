@@ -2,6 +2,8 @@ package com.ecommerce.vn.controllers;
 
 import com.ecommerce.vn.dtos.SupplyDTO;
 import com.ecommerce.vn.services.SupplierService;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +28,12 @@ public class SupplierController {
     }
 
     @PostMapping
-    public ResponseEntity<SupplyDTO> createSupplier(@RequestBody SupplyDTO supplyDTO) {
+    public ResponseEntity<SupplyDTO> createSupplier(@Valid @RequestBody SupplyDTO supplyDTO) {
         return ResponseEntity.ok(supplierService.createSuppliers(supplyDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SupplyDTO> updateSupplier(@PathVariable Integer id, @RequestBody SupplyDTO supplyDTO) {
+    public ResponseEntity<SupplyDTO> updateSupplier(@PathVariable Integer id, @Valid @RequestBody SupplyDTO supplyDTO) {
         return ResponseEntity.ok(supplierService.updateSuppliers(id, supplyDTO));
     }
 
