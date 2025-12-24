@@ -1,8 +1,3 @@
-Dưới đây là nội dung chi tiết cho file `README.md` của dự án, được viết bằng tiếng Anh (chuẩn cho GitHub) dựa trên các công nghệ và tính năng mình đã phân tích từ code của bạn.
-
-Bạn có thể copy nội dung này vào file `README.md` trong repo GitHub của mình.
-
-### Nội dung đề xuất cho README.md
 
 ```markdown
 # Northwind E-commerce API (Spring Boot)
@@ -105,19 +100,4 @@ Run unit and integration tests using Maven:
 
 ```
 
-## 👤 Author
 
-**[Tên của bạn]**
-
-* Github: [Link Github của bạn]
-
-```
-
----
-
-### Một số lưu ý khi bạn sử dụng README này:
-1.  **Thay thế thông tin:** Nhớ sửa lại `[Link Github của bạn]` và `[Tên của bạn]` ở cuối file.
-2.  **Bảo mật:** Trong file `application.properties` của bạn đang để lộ password database (`tubeo1012`) và `jwt.secret`. Khi đẩy code lên GitHub công khai, bạn nên chuyển các thông tin nhạy cảm này sang biến môi trường (Environment Variables) hoặc không commit file properties thực tế lên để tránh lộ thông tin.
-3.  **Port:** Mình thấy bạn config `server.port=8888` trong `application.properties`, nên mình đã ghi rõ trong README để người xem biết đường truy cập.
-
-```
