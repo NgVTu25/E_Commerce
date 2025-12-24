@@ -1,9 +1,38 @@
 services:
-  postgres:
-    image: 'postgres:latest'
-    environment:
-      - 'POSTGRES_DB=mydatabase'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=myuser'
+  # Service Backend Spring Boot
+  app:
+    build: .
+    container_name: ecommerce-backend
     ports:
-      - '5432'
+      - "8888:8888"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/ecommerce?TimeZone=Asia/Ho_Chi_Minh
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=tubeo1012
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - postgres
+    networks:
+      - ecommerce-network
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: ecommerce-db
+    environment:
+      - POSTGRES_DB=ecommerce
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=tubeo1012
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ecommerce-network
+
+volumes:
+  postgres_data:
+
+
+networks:
+  ecommerce-network:
+    driver: bridge
