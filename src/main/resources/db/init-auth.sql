@@ -36,7 +36,7 @@ ON CONFLICT (name) DO NOTHING;
 -- Insert default admin user (password: admin123)
 -- Password is BCrypt encoded with strength 10
 INSERT INTO users (username, password, email, full_name, enabled) VALUES 
-    ('admin', '$2a$10$N9qo8uLOickgx2ZMRZoMye1J8qvqLqP4qO7mAkqXqP8qO7mAkqXqO', 'admin@example.com', 'System Administrator', TRUE)
+    ('admin', '$2a$10$7BJWEaoR5Bx6FxQo5msTX.gE1dEN5tiiBADs8Y5Q7AydfzP03pgG2', 'admin@example.com', 'System Administrator', TRUE)
 ON CONFLICT (username) DO NOTHING;
 
 -- Assign ROLE_ADMIN to admin user

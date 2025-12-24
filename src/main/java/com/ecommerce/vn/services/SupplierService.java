@@ -5,6 +5,8 @@ import com.ecommerce.vn.models.entitis.Suppliers;
 import com.ecommerce.vn.repositories.SupplierRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,7 @@ public class SupplierService {
     private final SupplierRepository supplierRepository;
     private final ModelMapper modelMapper;
 
+    @Cacheable(value = "suppliers")
     public List<SupplyDTO> getAllSuppliers(){
         return supplierRepository.findAll().
                 stream().map(suppliers -> modelMapper.map(suppliers, SupplyDTO.class)).toList();
@@ -25,12 +28,14 @@ public class SupplierService {
         return modelMapper.map(supply, SupplyDTO.class);
     }
 
+    @CacheEvict(value = "suppliers",allEntries = true)
     public SupplyDTO createSuppliers(SupplyDTO supplyDTO) {
         Suppliers suppliers = modelMapper.map(supplyDTO, Suppliers.class);
         supplierRepository.save(suppliers);
         return supplyDTO;
     }
 
+    @CacheEvict(value = "suppliers",allEntries = true)
     public SupplyDTO updateSuppliers(Integer id, SupplyDTO supplyDTO) {
         Suppliers existingSupply = modelMapper.map(getSuppliersById(id), Suppliers.class);
         modelMapper.map(supplyDTO, existingSupply);

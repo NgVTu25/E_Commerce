@@ -7,6 +7,8 @@ import com.ecommerce.vn.repositories.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ public class OrderService {
     private final OrderDetailRepository orderDetailRepository;
     private final ModelMapper modelMapper;
 
+    @Cacheable(value = "orders")
     public List<OrderDTO> getAllOrders() {
         return orderRepository.findAll()
                 .stream()
@@ -36,6 +39,7 @@ public class OrderService {
         return modelMapper.map(orders, OrderDTO.class);
     }
 
+    @CacheEvict(value = "orders", allEntries = true)
     @Transactional
     public OrderDTO createOrder(OrderDTO orderDTO) {
         Orders orders = modelMapper.map(orderDTO, Orders.class);
@@ -84,6 +88,7 @@ public class OrderService {
         return modelMapper.map(savedOrder, OrderDTO.class);
     }
 
+    @CacheEvict(value = "orders", allEntries = true)
     public OrderDTO updateOrder(Integer id, OrderDTO orderDTO) {
         Orders exitingOrders = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
         modelMapper.map(orderDTO, exitingOrders);
@@ -91,7 +96,7 @@ public class OrderService {
         return modelMapper.map(saveOrder, OrderDTO.class);
     }
 
-
+    @Cacheable(value = "orders")
     public List<OrderDTO> getOrderByCustomerId(String id) {
         customerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));

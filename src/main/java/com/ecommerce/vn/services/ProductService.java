@@ -7,6 +7,8 @@ import com.ecommerce.vn.models.entitis.Suppliers;
 import com.ecommerce.vn.repositories.ProductRepository;
 import com.ecommerce.vn.repositories.CategoryRepository;
 import com.ecommerce.vn.repositories.SupplierRepository;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.CacheEvict;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -22,11 +24,13 @@ public class ProductService {
     private final SupplierRepository supplierRepository;
     private final ModelMapper modelMapper;
 
+    @Cacheable(value = "products")
     public List<ProductDTO> getAllProducts() {
         return productRepository.findAll()
                 .stream()
                 .map(products -> modelMapper.map(products, ProductDTO.class)).toList();
     }
+
 
     public ProductDTO getProductById(Integer id) {
          Products products = productRepository.findById(id)
@@ -34,6 +38,7 @@ public class ProductService {
          return modelMapper.map(products, ProductDTO.class);
     }
 
+    @CacheEvict(value = "products", allEntries = true)
     public ProductDTO createProduct(ProductDTO productDTO) {
         Products product = modelMapper.map(productDTO, Products.class);
 
@@ -53,6 +58,7 @@ public class ProductService {
         return modelMapper.map(product, ProductDTO.class);
     }
 
+    @CacheEvict(value = "products", allEntries = true)
     public ProductDTO updateProduct(Integer id, ProductDTO productDTO) {
         Products existingProduct = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
         modelMapper.map(productDTO, existingProduct);
@@ -67,6 +73,7 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
+    @Cacheable(value = "products")
     public List<ProductDTO> searchProducts(String keyword) {
         return productRepository.findByProductNameContaining(keyword)
                 .stream()
