@@ -1,10 +1,9 @@
 package com.ecommerce.vn.dtos;
 
-import jakarta.persistence.Column;
 import lombok.Data;
 
 @Data
-public class CustomersDTOs {
+public class CustomerDTO {
     private String companyName;
     private String contactTitle;
     private String address;

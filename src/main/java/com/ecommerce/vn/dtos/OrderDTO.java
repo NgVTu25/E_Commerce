@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class OrdersDTOs {
@@ -26,4 +27,6 @@ public class OrdersDTOs {
     private Integer employeeId;
     private Long shipVia;
     private String customerId;
+
+    private List<OrderDetailsDTOs> orderDetails;
 }

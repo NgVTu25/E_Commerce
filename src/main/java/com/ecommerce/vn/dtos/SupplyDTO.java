@@ -3,7 +3,7 @@ package com.ecommerce.vn.dtos;
 import lombok.Data;
 
 @Data
-public class SuppliersDTOs {
+public class SupplyDTO {
     private String companyName;
     private String contactName;
     private String contactTitle;
