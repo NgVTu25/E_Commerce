@@ -13,7 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "employeeTerritories")
+@Table(name = "employeeterritories")
 public class EmployeeTerritories {
 
     @EmbeddedId

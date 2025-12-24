@@ -1,7 +1,6 @@
 package com.ecommerce.vn.services;
 
-import com.ecommerce.vn.config.GlobalExceptionHandler;
-import com.ecommerce.vn.dtos.CustomersDTOs;
+import com.ecommerce.vn.dtos.CustomerDTO;
 import com.ecommerce.vn.models.entitis.Customers;
 import com.ecommerce.vn.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,36 +12,44 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
+
     private final CustomerRepository customerRepository;
     private final ModelMapper modelMapper;
 
-    public List<Customers> getAllCustomer() {
-        return customerRepository.findAll();
+    public List<CustomerDTO> getAllCustomer() {
+        return customerRepository.findAll()
+                .stream()
+                .map(c -> modelMapper.map(c, CustomerDTO.class))
+                .toList();
     }
 
-    public Customers getCustomerById(String id) {
-        return customerRepository.findById(id)
+    public CustomerDTO getCustomerById(String id) {
+        Customers customer = customerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy CustomerID"));
+        return modelMapper.map(customer, CustomerDTO.class);
     }
 
-    public Customers createCustomer(CustomersDTOs customersDTOs) {
-        Customers customers = new Customers();
-        modelMapper.map(customersDTOs, customers);
-
-        return customerRepository.save(customers);
+    public CustomerDTO createCustomer(CustomerDTO dto) {
+        Customers entity = modelMapper.map(dto, Customers.class);
+        customerRepository.save(entity);
+        return dto;
     }
 
-    public Customers updateCustomer(String id, CustomersDTOs customersDTOs) {
-        Customers exitingCustomer = getCustomerById(id);
-        modelMapper.map(customersDTOs, exitingCustomer);
-        return customerRepository.save(exitingCustomer);
+    public CustomerDTO updateCustomer(String id, CustomerDTO dto) {
+        Customers existing = customerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy Customer để update"));
+
+        modelMapper.map(dto, existing);
+        customerRepository.save(existing);
+
+        return dto;
     }
 
-    public String deleteCustomer(String id) {
+    public void deleteCustomer(String id) {
         if (!customerRepository.existsById(id)) {
             throw new RuntimeException("Không tìm thấy Customer để xóa");
         }
-            customerRepository.deleteById(id);
-        return "Đã xóa thành công customer";
+        customerRepository.deleteById(id);
     }
 }
+

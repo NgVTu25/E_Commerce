@@ -1,9 +1,5 @@
 package com.ecommerce.vn.dtos;
 
-import com.ecommerce.vn.models.entitis.Customers;
-import com.ecommerce.vn.models.entitis.Employees;
-import com.ecommerce.vn.models.entitis.Shippers;
-import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -11,7 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
-public class OrdersDTOs {
+public class OrderDTO {
 
     private LocalDate orderDate;
     private LocalDate requiredDate;
@@ -28,5 +24,5 @@ public class OrdersDTOs {
     private Long shipVia;
     private String customerId;
 
-    private List<OrderDetailsDTOs> orderDetails;
+    private List<OrderDetailDTO> orderDetails;
 }

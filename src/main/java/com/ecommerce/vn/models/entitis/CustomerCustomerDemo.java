@@ -13,7 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "\"CustomerCustomerDemo\"")
+@Table(name = "customercustomerdemo")
 public class CustomerCustomerDemo {
 
     @EmbeddedId
@@ -21,12 +21,12 @@ public class CustomerCustomerDemo {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("customerId")
-    @JoinColumn(name = "\"CustomerID\"")
+    @JoinColumn(name = "CustomerID")
     private Customers customer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("customerTypeId")
-    @JoinColumn(name = "\"CustomerTypeID\"")
+    @JoinColumn(name = "CustomerTypeID")
     private CustomerDemographics customerDemographics;
 
     @Data
@@ -35,10 +35,10 @@ public class CustomerCustomerDemo {
     @Embeddable
     public static class CustomerCustomerDemoId implements Serializable {
 
-        @Column(name = "\"CustomerID\"")
+        @Column(name = "CustomerID")
         private String customerId;
 
-        @Column(name = "\"CustomerTypeID\"")
+        @Column(name = "CustomerTypeID")
         private String customerTypeId;
     }
 }

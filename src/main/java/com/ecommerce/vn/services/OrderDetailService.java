@@ -1,7 +1,6 @@
 package com.ecommerce.vn.services;
 
 import com.ecommerce.vn.models.entitis.OrderDetails;
-import com.ecommerce.vn.models.entitis.Orders;
 import com.ecommerce.vn.repositories.EmployeeRepository;
 import com.ecommerce.vn.repositories.OrderDetailRepository;
 import com.ecommerce.vn.repositories.OrderRepository;

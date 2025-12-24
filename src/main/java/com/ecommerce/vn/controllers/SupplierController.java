@@ -1,7 +1,6 @@
 package com.ecommerce.vn.controllers;
 
-import com.ecommerce.vn.dtos.SuppliersDTOs;
-import com.ecommerce.vn.models.entitis.Suppliers;
+import com.ecommerce.vn.dtos.SupplyDTO;
 import com.ecommerce.vn.services.SupplierService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,30 +9,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/suppliers")
+@RequestMapping("/api/supplier")
 @RequiredArgsConstructor
 public class SupplierController {
 
     private final SupplierService supplierService;
 
     @GetMapping
-    public ResponseEntity<List<Suppliers>> getAllSuppliers() {
+    public ResponseEntity<List<SupplyDTO>> getAllSuppliers() {
         return ResponseEntity.ok(supplierService.getAllSuppliers());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Suppliers> getSupplierById(@PathVariable Integer id) {
+    public ResponseEntity<SupplyDTO> getSupplierById(@PathVariable Integer id) {
         return ResponseEntity.ok(supplierService.getSuppliersById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Suppliers> createSupplier(@RequestBody SuppliersDTOs suppliersDTOs) {
-        return ResponseEntity.ok(supplierService.createSuppliers(suppliersDTOs));
+    public ResponseEntity<SupplyDTO> createSupplier(@RequestBody SupplyDTO supplyDTO) {
+        return ResponseEntity.ok(supplierService.createSuppliers(supplyDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Suppliers> updateSupplier(@PathVariable Integer id, @RequestBody SuppliersDTOs suppliersDTOs) {
-        return ResponseEntity.ok(supplierService.updateSuppliers(id, suppliersDTOs));
+    public ResponseEntity<SupplyDTO> updateSupplier(@PathVariable Integer id, @RequestBody SupplyDTO supplyDTO) {
+        return ResponseEntity.ok(supplierService.updateSuppliers(id, supplyDTO));
     }
 
     @DeleteMapping("/{id}")

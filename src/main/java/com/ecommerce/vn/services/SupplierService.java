@@ -1,6 +1,6 @@
 package com.ecommerce.vn.services;
 
-import com.ecommerce.vn.dtos.SuppliersDTOs;
+import com.ecommerce.vn.dtos.SupplyDTO;
 import com.ecommerce.vn.models.entitis.Suppliers;
 import com.ecommerce.vn.repositories.SupplierRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,24 +15,27 @@ public class SupplierService {
     private final SupplierRepository supplierRepository;
     private final ModelMapper modelMapper;
 
-    public List<Suppliers> getAllSuppliers(){
-        return supplierRepository.findAll();
+    public List<SupplyDTO> getAllSuppliers(){
+        return supplierRepository.findAll().
+                stream().map(suppliers -> modelMapper.map(suppliers, SupplyDTO.class)).toList();
     }
 
-    public Suppliers getSuppliersById(Integer id) {
-        return supplierRepository.findById(id).orElseThrow(() -> new RuntimeException("Không tìm thấy Supplier"));
+    public SupplyDTO getSuppliersById(Integer id) {
+        Suppliers supply= supplierRepository.findById(id).orElseThrow(() -> new RuntimeException("Không tìm thấy Supply"));
+        return modelMapper.map(supply, SupplyDTO.class);
     }
 
-    public Suppliers createSuppliers(SuppliersDTOs suppliersDTOs) {
-        Suppliers suppliers = new Suppliers();
-        modelMapper.map(suppliersDTOs, suppliers);
-        return supplierRepository.save(suppliers);
+    public SupplyDTO createSuppliers(SupplyDTO supplyDTO) {
+        Suppliers suppliers = modelMapper.map(supplyDTO, Suppliers.class);
+        supplierRepository.save(suppliers);
+        return supplyDTO;
     }
 
-    public Suppliers updateSuppliers(Integer id, SuppliersDTOs suppliersDTOs) {
-        Suppliers suppliers = getSuppliersById(id);
-        modelMapper.map(suppliersDTOs, suppliers);
-        return supplierRepository.save(suppliers);
+    public SupplyDTO updateSuppliers(Integer id, SupplyDTO supplyDTO) {
+        Suppliers existingSupply = modelMapper.map(getSuppliersById(id), Suppliers.class);
+        modelMapper.map(supplyDTO, existingSupply);
+        supplierRepository.save(existingSupply);
+        return supplyDTO;
     }
 
     public void deleteSuppliers(Integer id) {

@@ -1,6 +1,6 @@
 package com.ecommerce.vn.services;
 
-import com.ecommerce.vn.dtos.CategoriesDTOs;
+import com.ecommerce.vn.dtos.CategoryDTO;
 import com.ecommerce.vn.models.entitis.Categories;
 import com.ecommerce.vn.repositories.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,31 +16,34 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final ModelMapper modelMapper;
 
-    public List<Categories> getAllCategories() {
-        return categoryRepository.findAll();
+    public List<CategoryDTO> getAllCategories() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(c -> modelMapper.map(c, CategoryDTO.class))
+                .toList();
     }
 
-    public List<Categories> getCategoryByName(String name) {
-        return categoryRepository.findByCategoryNameContaining(name);
+    public List<CategoryDTO> getCategoryByName(String name) {
+        return categoryRepository.findByCategoryNameContaining(name).stream().map(c -> modelMapper.map(c, CategoryDTO.class)).toList();
     }
 
-    public Categories getCategoryById(Short id) {
-        return categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy danh mục có ID: " + id));
+    public CategoryDTO getCategoryById(Short id) {
+        Categories category = categoryRepository.findById(id).orElseThrow(()  -> new RuntimeException("Category not found"));
+        return modelMapper.map(category, CategoryDTO.class);
     }
 
-    public Categories updateCategory(Short id, CategoriesDTOs categoryDetails) {
-        Categories existingCategory = getCategoryById(id);
+    public CategoryDTO updateCategory(Short id, CategoryDTO categoryDetails) {
+        Categories existingCategory = categoryRepository.findById(id).orElseThrow
+                (()  -> new RuntimeException("Category not found"));
         modelMapper.map(categoryDetails, existingCategory);
-        return categoryRepository.save(existingCategory);
+        return categoryDetails;
     }
 
-    public Categories createCategory(CategoriesDTOs categoriesDTOs) {
-        Categories category = new Categories();
-        modelMapper.map(categoriesDTOs, category);
-        return categoryRepository.save(category);
+    public CategoryDTO createCategory(CategoryDTO categoryDTO) {
+        Categories category = modelMapper.map(categoryDTO, Categories.class);
+        categoryRepository.save(category);
+        return categoryDTO;
     }
-
 
     public void deleteCategory(Short id) {
         if (!categoryRepository.existsById(id)) {
