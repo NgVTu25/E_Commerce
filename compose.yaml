@@ -1,15 +1,21 @@
 services:
-  # Service Backend Spring Boot
   app:
     build: .
     container_name: ecommerce-backend
     ports:
       - "8888:8888"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/ecommerce?TimeZone=Asia/Ho_Chi_Minh
+      # URL dùng tên service 'postgres' là chuẩn rồi
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/ecommerce
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=tubeo1012
+
+      # Quan trọng: TẮT init của Spring đi để tránh xung đột
+      - SPRING_SQL_INIT_MODE=never
+
+      # Để update để Hibernate mapping lại entity nếu cần
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
       - SPRING_DATA_REDIS_HOST=redis
       - SPRING_DATA_REDIS_PORT=6379
     depends_on:
@@ -29,6 +35,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+            - ./src/main/resources/db/backup.sql:/docker-entrypoint-initdb.d/1-init.sql
+
     networks:
       - ecommerce-network
 
@@ -42,7 +50,6 @@ services:
 
 volumes:
   postgres_data:
-
 
 networks:
   ecommerce-network:

@@ -49,6 +49,7 @@ public class SecurityConfig {
 
                         // Order management
                         .requestMatchers(HttpMethod.POST, "/api/order/**").hasAnyRole("ADMIN", "MANAGER", "USER")
+
                         .requestMatchers(HttpMethod.GET, "/api/order/**").hasAnyRole("ADMIN", "MANAGER", "USER")
 
                         // Customer management
