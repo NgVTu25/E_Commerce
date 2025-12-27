@@ -35,9 +35,10 @@ ON CONFLICT (name) DO NOTHING;
 
 -- Insert default admin user (password: admin123)
 -- Password is BCrypt encoded with strength 10
+-- Note: Use UPDATE below if user already exists with wrong password
 INSERT INTO users (username, password, email, full_name, enabled) VALUES 
-    ('admin', '$2a$10$7BJWEaoR5Bx6FxQo5msTX.gE1dEN5tiiBADs8Y5Q7AydfzP03pgG2', 'admin@example.com', 'System Administrator', TRUE)
-ON CONFLICT (username) DO NOTHING;
+    ('admin', '$2a$10$N9qo8uLOickgx2ZMRZoMye1J8JYJmZa6QwvKYXJQNqXbLhJz0L3/C', 'admin@example.com', 'System Administrator', TRUE)
+ON CONFLICT (username) DO UPDATE SET password = '$2a$10$N9qo8uLOickgx2ZMRZoMye1J8JYJmZa6QwvKYXJQNqXbLhJz0L3/C';
 
 -- Assign ROLE_ADMIN to admin user
 INSERT INTO user_roles (user_id, role_id)
