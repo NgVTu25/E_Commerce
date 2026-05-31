@@ -91,13 +91,43 @@ The project uses a modernized version of the **Northwind Database** schema, incl
 * `orders`, `order_details`, `shippers`
 * `employees`, `employee_territories`
 
+## 🖥️ Frontend (React + Vite)
+
+The `frontend/` app connects to the Spring Boot API (default port **8888**).
+
+### Run locally
+
+1. Start backend: `./mvnw spring-boot:run` (and PostgreSQL via Docker if needed).
+2. In another terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open **http://localhost:5173**. Vite proxies `/api` to `http://localhost:8888`.
+
+### Features
+
+- Browse and search products (public API)
+- View categories
+- Login / register with JWT (stored in `localStorage`)
+
+Optional: set `VITE_API_BASE_URL` in `frontend/.env` if the API is not proxied (e.g. production build).
+
 ## 🧪 Testing
 
 Run unit and integration tests using Maven:
 
 ```bash
 ./mvnw test
-
 ```
 
+Tests include:
+
+- `@WebMvcTest` for `ProductController` and `AuthController`
+- Mockito unit tests for `ProductService`
+- `GlobalExceptionHandler` unit tests
+- `@SpringBootTest` context load (H2 in-memory, profile `test`)
 
