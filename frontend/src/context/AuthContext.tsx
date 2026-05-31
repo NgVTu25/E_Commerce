@@ -2,6 +2,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -9,83 +10,83 @@ import {
 import { login as apiLogin, register as apiRegister } from '../api/auth';
 import type { AuthResponse, LoginRequest, RegisterRequest } from '../types';
 
-interface AuthState {
-  username: string | null;
-  roles: string[];
+type AuthContextValue = {
   isAuthenticated: boolean;
-}
-
-interface AuthContextValue extends AuthState {
+  username: string;
+  roles: string[];
   login: (data: LoginRequest) => Promise<void>;
   register: (data: RegisterRequest) => Promise<void>;
   logout: () => void;
-}
+};
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-function readStoredAuth(): AuthState {
-  const username = localStorage.getItem('username');
-  const rolesRaw = localStorage.getItem('roles');
-  const roles = rolesRaw ? (JSON.parse(rolesRaw) as string[]) : [];
-  return {
-    username,
-    roles,
-    isAuthenticated: Boolean(localStorage.getItem('accessToken')),
-  };
-}
-
-function persistAuth(response: AuthResponse): void {
-  localStorage.setItem('accessToken', response.accessToken);
-  localStorage.setItem('refreshToken', response.refreshToken);
-  localStorage.setItem('username', response.username);
-  localStorage.setItem('roles', JSON.stringify(response.roles ?? []));
+function persistAuth(data: AuthResponse) {
+  localStorage.setItem('accessToken', data.accessToken);
+  localStorage.setItem('refreshToken', data.refreshToken);
+  localStorage.setItem('username', data.username);
+  localStorage.setItem('roles', JSON.stringify(data.roles));
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [auth, setAuth] = useState<AuthState>(readStoredAuth);
+  const [username, setUsername] = useState('');
+  const [roles, setRoles] = useState<string[]>([]);
+  const [ready, setReady] = useState(false);
 
-  const applyAuth = useCallback((response: AuthResponse) => {
-    persistAuth(response);
-    setAuth({
-      username: response.username,
-      roles: response.roles ?? [],
-      isAuthenticated: true,
-    });
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    const storedUser = localStorage.getItem('username');
+    const storedRoles = localStorage.getItem('roles');
+    if (token && storedUser) {
+      setUsername(storedUser);
+      setRoles(storedRoles ? JSON.parse(storedRoles) : []);
+    }
+    setReady(true);
   }, []);
 
-  const login = useCallback(
-    async (data: LoginRequest) => {
-      const response = await apiLogin(data);
-      applyAuth(response);
-    },
-    [applyAuth],
-  );
+  const login = useCallback(async (data: LoginRequest) => {
+    const res = await apiLogin(data);
+    persistAuth(res);
+    setUsername(res.username);
+    setRoles(res.roles);
+  }, []);
 
-  const register = useCallback(
-    async (data: RegisterRequest) => {
-      const response = await apiRegister(data);
-      applyAuth(response);
-    },
-    [applyAuth],
-  );
+  const register = useCallback(async (data: RegisterRequest) => {
+    const res = await apiRegister(data);
+    persistAuth(res);
+    setUsername(res.username);
+    setRoles(res.roles);
+  }, []);
 
   const logout = useCallback(() => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('username');
     localStorage.removeItem('roles');
-    setAuth({ username: null, roles: [], isAuthenticated: false });
+    setUsername('');
+    setRoles([]);
   }, []);
 
   const value = useMemo(
-    () => ({ ...auth, login, register, logout }),
-    [auth, login, register, logout],
+    () => ({
+      isAuthenticated: Boolean(username) && Boolean(localStorage.getItem('accessToken')),
+      username,
+      roles,
+      login,
+      register,
+      logout,
+    }),
+    [username, roles, login, register, logout],
   );
+
+  if (!ready) {
+    return null;
+  }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export function useAuth(): AuthContextValue {
+export function useAuth() {
   const ctx = useContext(AuthContext);
   if (!ctx) {
     throw new Error('useAuth must be used within AuthProvider');

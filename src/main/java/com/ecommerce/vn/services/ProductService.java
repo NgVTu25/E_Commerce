@@ -28,14 +28,15 @@ public class ProductService {
     public List<ProductDTO> getAllProducts() {
         return productRepository.findAll()
                 .stream()
-                .map(products -> modelMapper.map(products, ProductDTO.class)).toList();
+                .map(this::toDto)
+                .toList();
     }
 
 
     public ProductDTO getProductById(Integer id) {
          Products products = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm ID: " + id));
-         return modelMapper.map(products, ProductDTO.class);
+         return toDto(products);
     }
 
     @CacheEvict(value = "products", allEntries = true)
@@ -55,7 +56,7 @@ public class ProductService {
         }
 
         productRepository.save(product);
-        return modelMapper.map(product, ProductDTO.class);
+        return toDto(product);
     }
 
     @CacheEvict(value = "products", allEntries = true)
@@ -63,7 +64,7 @@ public class ProductService {
         Products existingProduct = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
         modelMapper.map(productDTO, existingProduct);
         Products save = productRepository.save(existingProduct);
-        return modelMapper.map(save, ProductDTO.class);
+        return toDto(save);
     }
 
     public void deleteProduct(Integer id) {
@@ -73,11 +74,23 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
+    private ProductDTO toDto(Products product) {
+        ProductDTO dto = modelMapper.map(product, ProductDTO.class);
+        dto.setProductId(product.getId());
+        if (product.getCategory() != null) {
+            dto.setCategoryId(product.getCategory().getId());
+        }
+        if (product.getSupplier() != null) {
+            dto.setSupplierId(product.getSupplier().getId());
+        }
+        return dto;
+    }
+
     @Cacheable(value = "products")
     public List<ProductDTO> searchProducts(String keyword) {
         return productRepository.findByProductNameContaining(keyword)
                 .stream()
-                .map(products -> modelMapper.map(products, ProductDTO.class))
+                .map(this::toDto)
                 .toList();
     }
 }

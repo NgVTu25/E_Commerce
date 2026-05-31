@@ -8,6 +8,8 @@ import lombok.Data;
 @Data
 public class ShipperDTO {
 
+    private Long shipperId;
+
     @NotBlank(message = "Company name is required")
     @Size(min = 2, max = 200, message = "Company name must be between 2 and 200 characters")
     private String companyName;

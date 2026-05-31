@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 @Data
 public class ProductDTO {
 
-    private Integer id;
+    private Integer productId;
 
     @NotBlank(message = "Product name is required")
     @Size(min = 2, max = 200, message = "Product name must be between 2 and 200 characters")

@@ -1,34 +1,32 @@
 import { Link } from 'react-router-dom';
 import type { Product } from '../types';
 
-interface ProductCardProps {
+type Props = {
   product: Product;
-}
+};
 
-export function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product }: Props) {
+  const id = product.productId;
   const price = Number(product.unitPrice).toLocaleString('vi-VN', {
     style: 'currency',
     currency: 'USD',
   });
 
-  return (
-    <article className="product-card">
-      <div className="product-card-body">
-        <h3>
-          {product.id ? (
-            <Link to={`/products/${product.id}`}>{product.productName}</Link>
-          ) : (
-            product.productName
-          )}
-        </h3>
-        {product.quantityPerUnit && (
-          <p className="muted">{product.quantityPerUnit}</p>
-        )}
-        <p className="price">{price}</p>
-        <p className="stock">
-          Còn <strong>{product.unitsInStock}</strong> trong kho
-        </p>
-      </div>
-    </article>
+  const body = (
+    <>
+      <h3>{product.productName}</h3>
+      <p className="product-price">{price}</p>
+      <p className="product-stock">Còn {product.unitsInStock} sp</p>
+    </>
   );
+
+  if (id) {
+    return (
+      <Link to={`/products/${id}`} className="product-card">
+        {body}
+      </Link>
+    );
+  }
+
+  return <article className="product-card">{body}</article>;
 }

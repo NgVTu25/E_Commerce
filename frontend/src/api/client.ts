@@ -1,48 +1,44 @@
-const API_BASE = import.meta.env.VITE_API_BASE_URL ?? '';
+const baseUrl = import.meta.env.VITE_API_BASE_URL ?? '';
 
-type RequestOptions = RequestInit & { auth?: boolean };
+type ApiOptions = {
+  method?: string;
+  body?: unknown;
+  auth?: boolean;
+};
 
-function getToken(): string | null {
-  return localStorage.getItem('accessToken');
-}
+export async function api<T>(path: string, options: ApiOptions = {}): Promise<T> {
+  const { method = 'GET', body, auth = true } = options;
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
 
-export async function apiRequest<T>(
-  path: string,
-  options: RequestOptions = {},
-): Promise<T> {
-  const headers = new Headers(options.headers);
-  if (!headers.has('Content-Type') && options.body) {
-    headers.set('Content-Type', 'application/json');
-  }
-  if (options.auth !== false) {
-    const token = getToken();
+  if (auth) {
+    const token = localStorage.getItem('accessToken');
     if (token) {
-      headers.set('Authorization', `Bearer ${token}`);
+      headers.Authorization = `Bearer ${token}`;
     }
   }
 
-  const response = await fetch(`${API_BASE}${path}`, {
-    ...options,
+  const res = await fetch(`${baseUrl}${path}`, {
+    method,
     headers,
+    body: body !== undefined ? JSON.stringify(body) : undefined,
   });
 
-  if (!response.ok) {
-    let message = response.statusText;
+  if (!res.ok) {
+    let message = res.statusText;
     try {
-      const body = await response.json();
-      message =
-        typeof body === 'object' && body !== null && 'message' in body
-          ? String((body as { message: string }).message)
-          : JSON.stringify(body);
+      const err = await res.json();
+      message = err.message ?? err.error ?? JSON.stringify(err);
     } catch {
-      /* ignore parse errors */
+      /* ignore */
     }
-    throw new Error(message || `HTTP ${response.status}`);
+    throw new Error(message || `HTTP ${res.status}`);
   }
 
-  if (response.status === 204) {
+  if (res.status === 204) {
     return undefined as T;
   }
 
-  return response.json() as Promise<T>;
+  return res.json() as Promise<T>;
 }

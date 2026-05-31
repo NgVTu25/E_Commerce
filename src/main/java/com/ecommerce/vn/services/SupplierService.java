@@ -20,12 +20,18 @@ public class SupplierService {
     @Cacheable(value = "suppliers")
     public List<SupplyDTO> getAllSuppliers(){
         return supplierRepository.findAll().
-                stream().map(suppliers -> modelMapper.map(suppliers, SupplyDTO.class)).toList();
+                stream().map(this::toDto).toList();
     }
 
     public SupplyDTO getSuppliersById(Integer id) {
         Suppliers supply= supplierRepository.findById(id).orElseThrow(() -> new RuntimeException("Không tìm thấy Supply"));
-        return modelMapper.map(supply, SupplyDTO.class);
+        return toDto(supply);
+    }
+
+    private SupplyDTO toDto(Suppliers supplier) {
+        SupplyDTO dto = modelMapper.map(supplier, SupplyDTO.class);
+        dto.setSupplierId(supplier.getId());
+        return dto;
     }
 
     @CacheEvict(value = "suppliers",allEntries = true)

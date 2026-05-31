@@ -19,14 +19,20 @@ public class CustomerService {
     public List<CustomerDTO> getAllCustomer() {
         return customerRepository.findAll()
                 .stream()
-                .map(c -> modelMapper.map(c, CustomerDTO.class))
+                .map(this::toDto)
                 .toList();
     }
 
     public CustomerDTO getCustomerById(String id) {
         Customers customer = customerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy CustomerID"));
-        return modelMapper.map(customer, CustomerDTO.class);
+        return toDto(customer);
+    }
+
+    private CustomerDTO toDto(Customers customer) {
+        CustomerDTO dto = modelMapper.map(customer, CustomerDTO.class);
+        dto.setCustomerId(customer.getId());
+        return dto;
     }
 
     public CustomerDTO createCustomer(CustomerDTO dto) {

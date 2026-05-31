@@ -1,6 +1,6 @@
-import { apiRequest } from './client';
+import { api } from './client';
 import type { Category } from '../types';
 
-export function fetchCategories(): Promise<Category[]> {
-  return apiRequest<Category[]>('/api/category', { auth: false });
+export function fetchCategories() {
+  return api<Category[]>('/api/category', { auth: false });
 }

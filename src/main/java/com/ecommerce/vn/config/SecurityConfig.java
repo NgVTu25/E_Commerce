@@ -63,6 +63,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/supplier/**").hasAnyRole("ADMIN", "MANAGER")
                         .requestMatchers("/api/shipper/**").hasAnyRole("ADMIN", "MANAGER")
 
+                        // Employee and Territory - read-only for Admin/Manager
+                        .requestMatchers(HttpMethod.GET, "/api/employee/**").hasAnyRole("ADMIN", "MANAGER")
+                        .requestMatchers(HttpMethod.GET, "/api/territory/**").hasAnyRole("ADMIN", "MANAGER")
+
                         // All other requests need authentication
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session

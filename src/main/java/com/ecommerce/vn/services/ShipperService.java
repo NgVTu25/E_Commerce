@@ -18,19 +18,25 @@ public class ShipperService {
     public List<ShipperDTO> getAllShippers() {
         return shipperRepository.findAll()
                 .stream()
-                .map(shippers -> modelMapper.map(shippers, ShipperDTO.class))
+                .map(this::toDto)
                 .toList();
+    }
+
+    private ShipperDTO toDto(Shippers shipper) {
+        ShipperDTO dto = modelMapper.map(shipper, ShipperDTO.class);
+        dto.setShipperId(shipper.getId());
+        return dto;
     }
 
     public ShipperDTO createShipper(ShipperDTO shipperDTO) {
         Shippers shippers = modelMapper.map(shipperDTO, Shippers.class);
-        shipperRepository.save(shippers);
-        return shipperDTO;
+        Shippers saved = shipperRepository.save(shippers);
+        return toDto(saved);
     }
 
     public ShipperDTO getShipperByPhone(String phone) {
         Shippers shippers = shipperRepository.findByPhone(phone);
-        return modelMapper.map(shippers, ShipperDTO.class);
+        return toDto(shippers);
     }
 
 }

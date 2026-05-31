@@ -1,75 +1,60 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-export function RegisterPage() {
+export default function RegisterPage() {
   const { register } = useAuth();
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  async function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();
-    setLoading(true);
-    setError(null);
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setError('');
     try {
       await register({ username, email, password, fullName: fullName || undefined });
       navigate('/');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Đăng ký thất bại');
-    } finally {
-      setLoading(false);
     }
-  }
+  };
 
   return (
-    <section className="page auth-page">
-      <form className="auth-card" onSubmit={handleSubmit}>
-        <h1>Đăng ký</h1>
-        {error && <p className="error-banner">{error}</p>}
+    <div className="page auth-page">
+      <h1>Đăng ký</h1>
+      <form className="auth-form" onSubmit={onSubmit}>
         <label>
           Tên đăng nhập
-          <input
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            minLength={3}
-            required
-          />
+          <input className="input" value={username} onChange={(e) => setUsername(e.target.value)} />
         </label>
         <label>
           Email
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <input className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         </label>
         <label>
           Họ tên
-          <input value={fullName} onChange={(e) => setFullName(e.target.value)} />
+          <input className="input" value={fullName} onChange={(e) => setFullName(e.target.value)} />
         </label>
         <label>
           Mật khẩu
           <input
             type="password"
+            className="input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            minLength={6}
-            required
           />
         </label>
-        <button type="submit" className="btn btn-primary" disabled={loading}>
-          {loading ? 'Đang xử lý...' : 'Tạo tài khoản'}
+        {error && <div className="alert alert-error">{error}</div>}
+        <button type="submit" className="btn btn-primary">
+          Đăng ký
         </button>
-        <p className="auth-switch">
-          Đã có tài khoản? <Link to="/login">Đăng nhập</Link>
-        </p>
       </form>
-    </section>
+      <p>
+        Đã có tài khoản? <Link to="/login">Đăng nhập</Link>
+      </p>
+    </div>
   );
 }

@@ -19,17 +19,23 @@ public class CategoryService {
     public List<CategoryDTO> getAllCategories() {
         return categoryRepository.findAll()
                 .stream()
-                .map(c -> modelMapper.map(c, CategoryDTO.class))
+                .map(this::toDto)
                 .toList();
     }
 
     public List<CategoryDTO> getCategoryByName(String name) {
-        return categoryRepository.findByCategoryNameContaining(name).stream().map(c -> modelMapper.map(c, CategoryDTO.class)).toList();
+        return categoryRepository.findByCategoryNameContaining(name).stream().map(this::toDto).toList();
     }
 
     public CategoryDTO getCategoryById(Short id) {
         Categories category = categoryRepository.findById(id).orElseThrow(()  -> new RuntimeException("Category not found"));
-        return modelMapper.map(category, CategoryDTO.class);
+        return toDto(category);
+    }
+
+    private CategoryDTO toDto(Categories category) {
+        CategoryDTO dto = modelMapper.map(category, CategoryDTO.class);
+        dto.setCategoryId(category.getId());
+        return dto;
     }
 
     public CategoryDTO updateCategory(Short id, CategoryDTO categoryDetails) {
