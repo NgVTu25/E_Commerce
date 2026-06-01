@@ -72,7 +72,4 @@ public class Employees {
 
     @Column(name = "PhotoPath")
     private String photoPath;
-
-    @Column(name = "Salary")
-    private String salary;
 }
