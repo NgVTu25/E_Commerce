@@ -126,7 +126,7 @@ class ProductControllerTest {
 
     private static ProductDTO sampleProduct(Integer id) {
         ProductDTO dto = new ProductDTO();
-        dto.setId(id);
+        dto.setProductId(id);
         dto.setProductName("Chai");
         dto.setUnitPrice(new BigDecimal("18.00"));
         dto.setUnitsInStock(39);

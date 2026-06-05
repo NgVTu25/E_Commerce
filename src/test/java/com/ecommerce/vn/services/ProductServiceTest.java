@@ -47,7 +47,7 @@ class ProductServiceTest {
     void getAllProducts_mapsEntitiesToDtos() {
         Products entity = Products.builder().id(1).productName("Chai").build();
         ProductDTO dto = new ProductDTO();
-        dto.setId(1);
+        dto.setProductId(1);
         dto.setProductName("Chai");
 
         when(productRepository.findAll()).thenReturn(List.of(entity));
@@ -82,7 +82,7 @@ class ProductServiceTest {
         Suppliers supplier = Suppliers.builder().id(3).build();
         Products saved = Products.builder().id(10).productName("New").build();
         ProductDTO output = new ProductDTO();
-        output.setId(10);
+        output.setProductId(10);
 
         when(modelMapper.map(input, Products.class)).thenReturn(mapped);
         when(categoryRepository.findById((short) 2)).thenReturn(Optional.of(category));
@@ -92,7 +92,7 @@ class ProductServiceTest {
 
         ProductDTO result = productService.createProduct(input);
 
-        assertThat(result.getId()).isEqualTo(10);
+        assertThat(result.getProductId()).isEqualTo(10);
         verify(productRepository).save(mapped);
     }
 
